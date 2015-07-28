@@ -1,3 +1,22 @@
+'''
+# findnpeek.py
+#
+# brief: change to or create a folder named "findnpeek" in the working
+#        directory for storing 2 log files. The main functionality is
+#        to look for PDF files at the given URLs and opening them up
+#        in the default browser, 5 PDF addresses at a time. The given
+#        URLs and found addresses of PDF files are logged, each catagory
+#        in its own text file.
+#
+# Author: Ron Rihoo
+#
+# Contributors: none yet.
+#
+# *Note: I'll have to come back to this later, but the PDF addresses are
+#        not fixed before logging them. This will have to be corrected.
+#
+'''
+
 import sys
 import os
 import urllib2
