@@ -12,8 +12,27 @@
 #
 # Contributors: none yet.
 #
-# *Note: I'll have to come back to this later, but the PDF addresses are
-#        not fixed before logging them. This will have to be corrected.
+# *Heads-up[1]: urlFixer(str m, str n) requires more URL analysis techniques, since
+#               it doesn't currently know if it has a full URL, or just a local
+#               directory reference that's made in the HTML code of the webpage.
+#               Current technique list:
+#                 (1) ANDs the given URL, m, with the found URL, n. If the given
+#                     URL is not a part of the found URL, then it concatenates m
+#                     to the left (beginning) of n. This produces Bug[1].
+#
+# *Bug[1]:   urlFixer(str m, str n) does not know anything about the found URL,
+#            n, and it just tries to see if the given URL, m, is a part of it.
+#            So if a link to an external PDF file (hosted on a different domain) 
+#            is found on the webpage at the given URL, then that perfectly good 
+#            URL becomes bad, since m is not a part of n and, so, urlFixer() 
+#            concatenates m to n anyway. As an example:
+#
+#               Given URL, m: http://cyberphit.net/
+#               Found URL, n: http://homenetworkwarrior.com/Cyber_Phit_1.1.pdf
+#               "Fixed URL" : http://cyberphit.net/http://homenetworkwarrior.com/Cyber_Phit_1.1.pdf
+#
+# *Bug[2]: I'll have to come back to this later, but the PDF addresses are
+#          not fixed before logging them. This will have to be corrected.
 #
 '''
 
