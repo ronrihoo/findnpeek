@@ -12,6 +12,9 @@
 #
 # Contributors: none yet.
 #
+# *Note[1]:     Turned urlFixer() off (commented it out) for now. I will fix it
+#               after final exams pass, unless someone comes around and fixes it.
+#
 # *Heads-up[1]: urlFixer(str m, str n) requires more URL analysis techniques, since
 #               it doesn't currently know if it has a full URL, or just a local
 #               directory reference that's made in the HTML code of the webpage.
@@ -196,7 +199,7 @@ def main():
         while (i <= _j - 1):
 
             # Check URL and fix it if necessary
-            file_URLs[i] = urlFixer(a, file_URLs[i])
+            #file_URLs[i] = urlFixer(a, file_URLs[i])
 
             print "found a " + filetype + " file at: " + file_URLs[i]
 
