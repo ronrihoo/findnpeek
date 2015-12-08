@@ -11,8 +11,8 @@
 #
 # Contributors: none yet.
 #
-# *Note[1]:     Turned urlFixer() off (commented it out) for now. I will fix it
-#               after final exams pass, unless someone comes around and fixes it.
+# *Note[1]:     Turned urlFixer() off (commented it out) for now. School and other
+#               projects have had the higher priority.
 #
 # *Heads-up[1]: urlFixer(str m, str n) requires more URL analysis techniques, since
 #               it doesn't currently know if it has a full URL, or just a local
