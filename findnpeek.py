@@ -9,7 +9,6 @@
 #
 # Author: Ron Rihoo
 #
-# Contributors: none yet.
 #
 # *Note[1]:     Turned urlFixer() off (commented it out) for now. School and other
 #               projects have had the higher priority.
