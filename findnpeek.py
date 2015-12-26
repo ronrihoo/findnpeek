@@ -7,7 +7,6 @@
 #        folder; one for the searched URLs and another for the PDF
 #        addresses that are found.
 #
-# Author: Ron Rihoo
 #
 #
 # *Note[1]:     Turned urlFixer() off (commented it out) for now. School and other
@@ -35,6 +34,7 @@
 # *Bug[2]: I'll have to come back to this later, but the PDF addresses are
 #          not fixed before logging them. This will have to be corrected.
 #
+# Author: Ron Rihoo
 '''
 
 import sys
