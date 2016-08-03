@@ -381,7 +381,7 @@ def findFilesFromLinksOnPage(webpageURL = pageURLGrabber, urlKeyword = keyword):
 # change to or make a folder, then run the main function
 folderMaker()
 
-# the two main functionalities of findnpeek.py
+# the three main functionalities of findnpeek.py
 #findFiles()
 #findLinks()
 findFilesFromLinksOnPage(pageURLGrabber(), keyword)
