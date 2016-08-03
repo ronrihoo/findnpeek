@@ -74,7 +74,7 @@ import urllib2
 import webbrowser
 from HTMLParser import HTMLParser
 
-pageAddress = 'http://events.pentaho.com/field-guide-to-hadoop-registration-lis.html?'
+pageAddress = ''
 filetype = ".pdf"                          # extension of filetype
 keyword = ".html"                          # expected keyword in a link to be found in HTML code
 pathname = 'findnpeek'                     # folder name
