@@ -1,7 +1,7 @@
 '''
 # findnpeek.py
 #
-# brief: has two main functions, findFiles() and findLinks().
+# brief: has three main functions, findFiles(), findLinks(), and findFilesFromLinksOnPage().
 #
 #        findFiles()
 #
@@ -16,6 +16,13 @@
 #           Looks for URLs in a HTML files, then invokes the browser to 
 #           load the URLs one at a time. No logging has yet been implemented
 #           for this function.
+#
+#        findFilesFromLinksOnPage()
+#
+#           Looks for URLs of other webpages at the given URL. Then looks for 
+#           PDF files at each one of the found webpage URLs, and invokes the
+#           browser to load the found PDF files; however, it prompts the user 
+#           to decide whether the next found URL should be searched for PDF files.
 #
 #
 # fileFinder()
@@ -67,7 +74,7 @@ import urllib2
 import webbrowser
 from HTMLParser import HTMLParser
 
-pageAddress = ''
+pageAddress = 'http://events.pentaho.com/field-guide-to-hadoop-registration-lis.html?'
 filetype = ".pdf"                          # extension of filetype
 keyword = ".html"                          # expected keyword in a link to be found in HTML code
 pathname = 'findnpeek'                     # folder name
@@ -182,10 +189,10 @@ class codeParser(HTMLParser):
                                 fileLogw.close()
 
 # for finding files that are of the indicated filetype
-def fileFinder():
-        siteLogger(pageURLGrabber())
+def fileFinder(webpageURL = pageURLGrabber()):
+        siteLogger(webpageURL)
         findings = codeParser()
-        findings.feed(readRemoteHTMLFile(pageURLGrabber()))
+        findings.feed(readRemoteHTMLFile(webpageURL))
         return
 
 def linkFinder(keyword):
@@ -259,17 +266,17 @@ def urlFixer(m, n):
         return n
 
         
-def findFiles():
+def findFiles(webpageURL = pageURLGrabber()):
 
-    a = pageURLGrabber()        # a for address
+    a = webpageURL              # a for address
     b = webbrowser.get()        # b for browser
     i = 0                       # i for iteration  -- loop counter
     k = 0                       # k for keep -- while-loop off/on state
     p = 5                       # p for pages -- the quantity of URLs to open before being prompted for more
 
     
-    print "Finding URL(s)..."
-    fileFinder()
+    print "Finding URL(s) of file(s)..."
+    fileFinder(a)
 
     if (file_URLs[0] == ''):
         print "No link to a " + filetype + " file found at given webpage."
@@ -285,9 +292,9 @@ def findFiles():
             b.open(file_URLs[i])
             i = i + 1
             
-            # open only p (preset as 5) URLs at a time in the default browser (as new tabs) to not clog up the system
+            # open only p (preset to 5) URLs at a time in the default browser (as new tabs) to not clog up the system
             # change p to any number of URLs you'd like to load before being prompted for more p-amount of URLs to open.
-            if (i % p == 0 & p != 0):
+            if (i % p == 0 and p != 0):
                 k = 1
 
                 # error-checking needs to be improved later
@@ -299,9 +306,9 @@ def findFiles():
         if (i == _j):
             print "Run completed."
 
-def findLinks():
+def findLinks(webpageURL = pageURLGrabber()):
 
-    a = pageURLGrabber()        # a for address
+    a = webpageURL()            # a for address
     b = webbrowser.get()        # b for browser
     i = 0                       # i for iteration  -- loop counter
     k = 0                       # k for keep -- while-loop off/on state
@@ -326,7 +333,7 @@ def findLinks():
             b.open(link_List[i])
             i = i + 1
             
-            # open only p (preset as 5) URLs at a time in the default browser (as new tabs) to not clog up the system
+            # open only p (preset to 1) URLs at a time in the default browser (as new tabs) to not clog up the system
             # change p to any number of URLs you'd like to load before being prompted for more p-amount of URLs to open.
             if (i % p == 0 and p != 0):
                 k = 1
@@ -342,9 +349,39 @@ def findLinks():
             # And just in case someone uses findFiles() after invoking findLinks()
             _j = 0
 
+def findFilesFromLinksOnPage(webpageURL = pageURLGrabber, urlKeyword = keyword):
+    i = 0                       # i for iteration  -- loop counter
+    k = 0                       # k for keep -- while-loop off/on state
+    p = 1                       # p for pages -- the quantity of URLs to open before being prompted for more    
+    print "Finding URL(s) of webpage(s)..."
+    link_List = linkFinder(urlKeyword)
+    if (link_List[0] == ''):
+        print "No links containing the keyword \"" + keyword + "\" found at given webpage."
+    else:
+        _j = len(link_List)
+        print str(_j) + " URLs found with the keyword '" + keyword + "'"
+        while (i <= _j - 1):
+            print "Finding files from " + link_List[i]
+            findFiles(link_List[i])
+            i = i + 1
+            # open only p (preset to 1) URLs at a time in the default browser (as new tabs) to not clog up the system
+            # change p to any number of URLs you'd like to load before being prompted for more p-amount of URLs to open.
+            if (i % p == 0 and p != 0):
+                k = 1
+                # error-checking needs to be improved later
+                while (k == 1):
+                    more = raw_input(str(i) + '/' + str(_j) + ' URLs opened. Open up more? (y/n): ')
+                    if(more == 'y'): k = 0;
+                    if(more == 'n'): i = _j; k = 0;
+        if (i == _j):
+            print "Run completed."
+            # And just in case someone uses findFiles() after invoking findLinks()
+            _j = 0
+
 # change to or make a folder, then run the main function
-#folderMaker()
+folderMaker()
 
 # the two main functionalities of findnpeek.py
 #findFiles()
 #findLinks()
+findFilesFromLinksOnPage(pageURLGrabber(), keyword)
