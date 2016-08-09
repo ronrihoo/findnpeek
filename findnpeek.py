@@ -308,7 +308,7 @@ def findFiles(webpageURL = pageURLGrabber()):
 
 def findLinks(webpageURL = pageURLGrabber()):
 
-    a = webpageURL()            # a for address
+    a = webpageURL              # a for address
     b = webbrowser.get()        # b for browser
     i = 0                       # i for iteration  -- loop counter
     k = 0                       # k for keep -- while-loop off/on state
