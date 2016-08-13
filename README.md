@@ -38,13 +38,13 @@ findFilesFromLinksOnPage(pageURLGrabber(), keyword)
 ```
 **Results:** invokes browser to load the files of interest (for instance, PDF files).
 
-## Extended Usage
+## Extended Use
 Where there is the will to write Python code, **findnpeek** is capable of providing a powerful start for your scraping projects. It already has for other Python projects. 
 
 ## Motivation
-In 2015, Ronald Rihoo was writing a proof-of-concept paper for the W2CW (Warrior to Cyber Warrior) community. And he required the use of a script that could scrape files from webpages (just for viewing, hence "peek"). So he did the unspeakable: he recycled Python code from another project.
+In 2015, Ronald Rihoo was writing a proof-of-concept paper for the W2CW (Warrior to Cyber Warrior) community. And he required the use of a script that could scrape files from webpages (just for viewing, hence "peek"). So he did the unspeakable: he recycled Python code from another one of his projects.
 
-```findnpeek.py``` was derived from one of Ron's larger (private) projects, named **Surfin' Man**. Originally, it's a modified version of ```findnkeep.py```, which scrapes for keeps and organizes files in directories that it automatically manages. 
+```findnpeek.py``` was derived from **Surfin' Man**, which is one of Ron's larger private projects. Originally, ```findnpeek.py``` is a modified version of ```findnkeep.py```, which scrapes for keeps and organizes files in directories that it automatically manages. 
 
 Now, **findnpeek** is a project of its own, since it can serve as a web scraper for data analysts. And given its original purpose, project leaders can use **findnpeek** to test the work of web developers for scrape vulnerabilities. 
 
