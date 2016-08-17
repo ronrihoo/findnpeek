@@ -47,13 +47,16 @@ import webbrowser
 from HTMLParser import HTMLParser
 import stringparser
 
-pageAddress = ''
+pageAddress = 'http://events.pentaho.com/field-guide-to-hadoop-registration-lis.html?'
 filetype = ".pdf"                          # extension of filetype
 keyword = ".html"                          # expected keyword in a link to be found in HTML code
 pathname = 'findnpeek'                     # folder name
 _p = 5                                     # number of links to search for files and invoke browser per file
 
-# Will create a folder for findnpeek if one doesn't exist in the running directory
+# self-explanatory
+arr = [ "com", "net", "org", "edu", "biz", "io" ];
+
+# creates a folder for findnpeek if one doesn't exist in the running directory
 def folderMaker():
     loop = 1
 
@@ -85,7 +88,7 @@ def folderMaker():
                 loop = 6
     return
 
-# Gives us the freedom to grab the URL in whichever way we want without having
+# gives us the freedom to grab the URL in whichever way we want without having
 # to mess with the main portion of the code.
 def pageURLGrabber():
     # grab from command line
@@ -193,18 +196,21 @@ def linkFinder(keyword):
         siteLogger(link)
     return linkArray
 
-# returns a string
+# reads HTML code from a remote HTML file over the internet
+# returns a string of the HTML code
 def readRemoteHTMLFile(remoteAddress):
     sock = urllib2.urlopen(remoteAddress)
     string = sock.read()
     sock.close()
     return string
 
-# returns a string
+# reads HTML code from an HTML file stored on the local storage
+# returns a string of the HTML code
 def readLocalHTMLFile(directory):
     import codecs
     return codecs.open(directory, 'r').read()
 
+# removes repeated strings in the given list
 # returns a string list
 def removeRepeatedStrings(stringList):
     temp = []
@@ -213,11 +219,12 @@ def removeRepeatedStrings(stringList):
             temp.append(item)
     return temp
 
-# prints URLs
+# prints all the URLs stored in a list
 def printAllLinks(links):
     for link in links:
         print link
 
+# runs a series of tests and tries to fix a broken or incomplete URL
 def urlFixer(url_List, webpageUrl):
     for i in xrange(len(url_List)):
         URL = url_List[i]
@@ -235,8 +242,8 @@ def urlFixer(url_List, webpageUrl):
                 url_List[i] = ""
     return url_List
 
+# checks a given URL for common URL traits
 def urlChecker(URL):
-    arr = [ "com", "net", "org", "biz", "io" ];
     temp = ""
     #simple test
     if "http" in URL:
@@ -253,7 +260,6 @@ def urlChecker(URL):
 
 # uses a variety of tests to split the domain out of the provided URL
 def urlDomainSplitter(URL):
-    arr = [ "com", "net", "org", "biz", "io" ];
     if "http" in URL:
         # add artificial slash for cases that don't already have one at the end: 
         # e.g., http://www.example.com
@@ -270,6 +276,7 @@ def urlDomainSplitter(URL):
     else:
         urlBareMinimum(URL)
 
+# checks for the bare minimum traits of a URL
 def urlBareMinimum(URL):
         # add artificial slash for cases that don't already have one at the end
         URL = URL + "/"
@@ -277,95 +284,13 @@ def urlBareMinimum(URL):
         domain = stringparser.splitRightAspect_toSubstring(URL, 0, "/")
         for a in arr:
             if a in domain:
-                temp = domain
-                return temp
-        if temp == "":
-            return "failed"
-        
-def findFiles(webpageURL = pageURLGrabber()):
-    a = webpageURL              # a for address
-    b = webbrowser.get()        # b for browser
-    i = 0                       # i for iteration  -- loop counter
-    k = 0                       # k for keep -- while-loop off/on state
-    p = 5                       # p for pages -- the quantity of URLs to open before being prompted for more
+                return domain
+        return "failed"
 
-    print "Finding URL(s) of file(s)..."
-    fileFinder(a)
-
-    if (file_URLs[0] == ''):
-        print "No link to a " + filetype + " file found at given webpage."
-    else:
-        while (i <= _j - 1):
-
-            # Check URL and fix it if necessary
-            #file_URLs[i] = urlFixer(a, file_URLs[i])
-
-            print "found a " + filetype + " file at: " + file_URLs[i]
-
-            print "Opening default browser..."
-            b.open(file_URLs[i])
-            i = i + 1
-            
-            # open only p (preset to 5) URLs at a time in the default browser (as new tabs) to not clog up the system
-            # change p to any number of URLs you'd like to load before being prompted for more p-amount of URLs to open.
-            if (i % p == 0 and p != 0):
-                k = 1
-
-                # error-checking needs to be improved later
-                while (k == 1):
-                    more = raw_input(str(i) + '/' + str(_j) + ' URLs opened. Open up more? (y/n): ')
-                    if(more == 'y'): k = 0;
-                    if(more == 'n'): i = _j; k = 0;
-
-        if (i == _j):
-            print "Run completed."
-
-def findLinks(webpageURL = pageURLGrabber()):
-    a = webpageURL              # a for address
-    b = webbrowser.get()        # b for browser
-    i = 0                       # i for iteration  -- loop counter
-    k = 0                       # k for keep -- while-loop off/on state
-    p = _p                      # p for pages -- the quantity of URLs to open before being prompted for more
-
-    print "Finding URL(s)..."
-    link_List = linkFinder(keyword)
-    _j = len(link_List)
-
-    if (len(link_List) < 1):
-        print "No links containing the keyword \"" + keyword + "\" found at given webpage."
-    elif (link_List[0] == ''):
-        print "No links containing the keyword \"" + keyword + "\" found at given webpage."
-    else:
-        while (i <= _j - 1):
-            # Check URL and fix it if necessary
-            #link_List[i] = urlFixer(a, link_List[i])
-
-            print "found: " + link_List[i]
-
-            #print "Opening default browser..."
-            #b.open(link_List[i])
-            print link_List[i]
-            i = i + 1
-            
-            # open only p (preset to 1) URLs at a time in the default browser (as new tabs) to not clog up the system
-            # change p to any number of URLs you'd like to load before being prompted for more p-amount of URLs to open.
-            if (i % p == 0 and p != 0):
-                k = 1
-
-                # error-checking needs to be improved later
-                while (k == 1):
-                    more = raw_input(str(i) + '/' + str(_j) + ' URLs opened. Open up more? (y/n): ')
-                    if(more == 'y'): k = 0;
-                    if(more == 'n'): i = _j; k = 0;
-
-        if (i == _j):
-            print "Run completed."
-            # And just in case someone uses findFiles() after invoking findLinks()
-            _j = 0
-
+# if the string "http" does not exist in the URL, then it cleans whatever that might  
+# be between the first index of the URL and the "www." part
 def cleanUrls(url_List):
     prefix = "http://"
-    prefix_s = "https://"
     for i in xrange(len(url_List)):
         URL = url_List[i]
         print URL
@@ -376,12 +301,76 @@ def cleanUrls(url_List):
                 url_List[i] = prefix + URL[URL.index("www."):]
     return url_List
 
+# switches a URL from "http://" to "https://"
 def switchToSecureUrl(URL):
     try:
         return "https" + URL[URL.index("http://") + 4:]
     except:
         return "failed"
 
+# finds files of the designated type at the given webpage URL
+def findFiles(webpageURL = pageURLGrabber()):
+    a = webpageURL              # a for address
+    b = webbrowser.get()        # b for browser
+    i = 0                       # i for iteration  -- loop counter
+    k = 0                       # k for keep -- while-loop off/on state
+    p = 5                       # p for pages -- the quantity of URLs to open before being prompted for more
+    print "Finding URL(s) of file(s)..."
+    fileFinder(a)
+    if (file_URLs[0] == ''):
+        print "No link to a " + filetype + " file found at given webpage."
+    else:
+        while (i <= _j - 1):
+            print "found a " + filetype + " file at: " + file_URLs[i]
+            print "Opening default browser..."
+            b.open(file_URLs[i])
+            i = i + 1
+            # open only p (preset to 5) URLs at a time in the default browser (as new tabs) to not clog up the system
+            # change p to any number of URLs you'd like to load before being prompted for more p-amount of URLs to open.
+            if (i % p == 0 and p != 0):
+                k = 1
+                while (k == 1):
+                    more = raw_input(str(i) + '/' + str(_j) + ' URLs opened. Open up more? (y/n): ')
+                    if(more == 'y'): k = 0;
+                    if(more == 'n'): i = _j; k = 0;
+        if (i == _j):
+            print "Run completed."
+
+# finds links on a webpage at the given URL
+def findLinks(webpageURL = pageURLGrabber()):
+    a = webpageURL              # a for address
+    b = webbrowser.get()        # b for browser
+    i = 0                       # i for iteration  -- loop counter
+    k = 0                       # k for keep -- while-loop off/on state
+    p = _p                      # p for pages -- the quantity of URLs to open before being prompted for more
+    print "Finding URL(s)..."
+    link_List = linkFinder(keyword)
+    _j = len(link_List)
+    if (len(link_List) < 1):
+        print "No links containing the keyword \"" + keyword + "\" found at given webpage."
+    elif (link_List[0] == ''):
+        print "No links containing the keyword \"" + keyword + "\" found at given webpage."
+    else:
+        while (i <= _j - 1):
+            print "found: " + link_List[i]
+            print "Opening default browser..."
+            b.open(link_List[i])
+            i = i + 1
+            # open only p (preset to 1) URLs at a time in the default browser (as new tabs) to not clog up the system
+            # change p to any number of URLs you'd like to load before being prompted for more p-amount of URLs to open.
+            if (i % p == 0 and p != 0):
+                k = 1
+                while (k == 1):
+                    more = raw_input(str(i) + '/' + str(_j) + ' URLs opened. Open up more? (y/n): ')
+                    if(more == 'y'): k = 0;
+                    if(more == 'n'): i = _j; k = 0;
+
+        if (i == _j):
+            print "Run completed."
+            # And just in case someone uses findFiles() after invoking findLinks()
+            _j = 0
+
+# invokes linkFinder(...), then invokes findFiles(...) on all of the URLs found by linkFinder(...)
 def findFilesFromLinksOnPage(webpageURL = pageURLGrabber, urlKeyword = keyword):
     f = False                   # fail test
     i = 0                       # i for iteration  -- loop counter
