@@ -33,7 +33,7 @@
 #
 #                     -will return, 
 #
-#                         //www.googletagmanager.com/ns.html
+#                         http//www.googletagmanager.com/ns.html
 #
 #                     It would be an easy update, but why add a feature that might not be used?
 #
