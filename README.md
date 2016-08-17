@@ -3,7 +3,7 @@
 Scrapes file(s) of interest from webpage(s) of interest.
 
 ##Quick Usage
-Find the `pageAddress` variable (currently at line 77) and add the URL of interest.
+Find the `pageAddress` variable (currently at line 50) and add the URL of interest.
 ```Python
 pageAddress = 'http://www.example.com/webpage.html'
 ```
